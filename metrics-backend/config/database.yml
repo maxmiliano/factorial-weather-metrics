@@ -1,0 +1,20 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  user: <%= ENV["POSTGRES_USER"] %>
+  password: <%= ENV["POSTGRES_PASSWORD"] %>
+  host: <%= ENV["POSTGRES_HOST"] %>
+
+development:
+  <<: *default
+  database: metrics_backend_development
+test:
+  <<: *default
+  database: metrics_backend_test
+
+production:
+  <<: *default
+  database: metrics_backend_production
+  username: metrics_backend
+  password: <%= ENV["METRICS_BACKEND_DATABASE_PASSWORD"] %>
