@@ -17,6 +17,7 @@ We need a Frontend + Backend application that allows you to post and visualize w
 - **Metrics**: The metrics will be stored in a table called `metrics` with the following columns: `id`, `name`, `value`, `timestamp`, `created_at`, and `updated_at`. Decided to add more fields to the table to make it easier to query and filter the data.
 - **Metric Types**: The `metrics_type` is a string field in the `metrics` table that will be used to filter the metrics. It was chosen because it is a simple and flexible way to filter and group the metrics. If the application grows and the metrics become more complex, we can create a new table to store the metrics type and create a relationship between the `metrics` and `metrics_type` tables.
 - **Averages**: The averages will be calculated using the `AVG` function from PostgreSQL. It was chosen because it is a fast and reliable way to calculate averages. If the application grows and the averages become a bottleneck, we can create a cache to store the averages and update them periodically.
+  Note: It was considered to calculate the averages in the frontend, but it was discarded because it would require a lot of data to be transferred from the backend to the frontend, and it would make the application slower and less reliable. Having the averages calculated in the backend allows us to have more control over the data and make the application more scalable.
 
 ## How to run the application
 

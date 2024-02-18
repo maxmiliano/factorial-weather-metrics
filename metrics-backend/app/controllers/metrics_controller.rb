@@ -37,6 +37,13 @@ class MetricsController < ApplicationController
     render status: :no_content
   end
 
+  # GET /metrics/averages?interval=
+  def averages
+  interval = params[:interval] || 'minute' # Default to minute
+  metrics = Metric.average_by_interval(interval)
+  render json: metrics, status: :ok
+  end
+
   private
 
   def set_metric
