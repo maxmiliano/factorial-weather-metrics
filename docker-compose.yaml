@@ -12,18 +12,16 @@ services:
       - POSTGRES_PASSWORD:${POSTGRES_PASSWORD}
     ports:
       - "5432:5432"
-    env_file:
-      - .env
     networks:
       - default
-  web:
+  api:
     build:
-      context: ./
+      context: ./metrics-backend
       dockerfile: Dockerfile
-    container_name: metrics-web
+    container_name: metrics-api
     command: "./bin/rails server -p 3000 -b '0.0.0.0'"
     volumes:
-      - .:/rails
+      - ./metrics-backend:/rails
       - bundle:/bundle
     ports:
       - "3000:3000"
@@ -33,15 +31,25 @@ services:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - RAILS_MASTER_KEY=${RAILS_MASTER_KEY}
-    env_file:
-      - .env
     depends_on:
       - db
+
+  frontend:
+    build:
+      context: ./metrics-frontend
+      dockerfile: Dockerfile
+    container_name: metrics-frontend
+    command: sh -c "npm install && npm start"
+    ports:
+      - 4000:4000
+    volumes:
+      - ./metrics-frontend:/frontend
+    depends_on:
+      - api
 networks:
   default:
     name: metrics
 
 volumes:
   postgres:
-  web:
   bundle:

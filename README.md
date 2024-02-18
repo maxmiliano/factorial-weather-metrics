@@ -13,6 +13,7 @@ We need a Frontend + Backend application that allows you to post and visualize w
 
 ## Decisions
 
+- **Split application**: The application was split into two parts: the backend and the frontend. It was chosen because it allows us to create a more scalable and maintainable application. It also allows us to have separate concerns and easily spot what is part of the backend and frontend.
 - **Metrics**: The metrics will be stored in a table called `metrics` with the following columns: `id`, `name`, `value`, `timestamp`, `created_at`, and `updated_at`. Decided to add more fields to the table to make it easier to query and filter the data.
 - **Metric Types**: The `metrics_type` is a string field in the `metrics` table that will be used to filter the metrics. It was chosen because it is a simple and flexible way to filter and group the metrics. If the application grows and the metrics become more complex, we can create a new table to store the metrics type and create a relationship between the `metrics` and `metrics_type` tables.
 - **Averages**: The averages will be calculated using the `AVG` function from PostgreSQL. It was chosen because it is a fast and reliable way to calculate averages. If the application grows and the averages become a bottleneck, we can create a cache to store the averages and update them periodically.
