@@ -18,20 +18,39 @@ We need a Frontend + Backend application that allows you to post and visualize w
 - **Metric Types**: The `metrics_type` is a string field in the `metrics` table that will be used to filter the metrics. It was chosen because it is a simple and flexible way to filter and group the metrics. If the application grows and the metrics become more complex, we can create a new table to store the metrics type and create a relationship between the `metrics` and `metrics_type` tables.
 - **Averages**: The averages will be calculated using the `AVG` function from PostgreSQL. It was chosen because it is a fast and reliable way to calculate averages. If the application grows and the averages become a bottleneck, we can create a cache to store the averages and update them periodically.
   Note: It was considered to calculate the averages in the frontend, but it was discarded because it would require a lot of data to be transferred from the backend to the frontend, and it would make the application slower and less reliable. Having the averages calculated in the backend allows us to have more control over the data and make the application more scalable.
+- **Error handling**: The application has a basic error handling in the backend. Decided to leave a more robust error handling as future improvements when the application need to scale up.
 
 ## How to run the application
 
 ### Development
 
 1. Clone the repository
-2. Run `docker-compose up` inside the `/backend` folder to start the backend Rails application
-[TODO: WIP]
+2. Run `docker-compose up` in the root folder to start the application
+  This is will start the database, backend, and frontend. The first time it will take a while to download the images and install the dependencies.
+3. The frontend will be available at `http://localhost:4000`
+4. The backend will be available at `http://localhost:3000`
+
 
 ### Tests
+
+- **Backend**: To run tests in the backend, run the following command in the root folder:
+
+```bash
+bundle exec rspec
+```
+- **Frontend**:
+  - To run tests in the frontend, run the following command in the `frontend` folder:
+
+```bash
+WIP
+```
 
 
 ## Future Improvements
 
 - **Authentication**: Add authentication to the application to make it secure and reliable.
 - **Metrics Type**: Create a new table to store the metrics type and create a relationship between the `metrics` and `metrics_type` tables.
+- **Metric Name**: Normalize the data model by moving the `name` field to a new model (`City`, for instance) and create a relationship between the `metrics` and the table with this `metric_name` tables.
 - **Averages Cache**: Create a cache to store the averages and update them periodically.
+- **Charts**: Add charts to the frontend to visualize the metrics and averages.
+- **Error handling**: Implement error handling also in the frontend to make the application more reliable and user-friendly.
