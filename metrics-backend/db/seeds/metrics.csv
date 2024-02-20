@@ -79,3 +79,13 @@ timestamp,name,value,metric_type,unit
 2024-02-18T08:01:00Z,Amsterdam,4.6,Temperature,°C
 2024-02-18T08:00:05Z,Amsterdam,78.0,Humidity,%
 2024-02-18T08:00:50Z,Amsterdam,79.0,Humidity,%
+2024-02-17T12:00:00Z,London,14,Temperature,°C
+2024-02-17T12:00:00Z,London,72,Humidity,%
+2024-02-17T12:05:00Z,London,15,Temperature,°C
+2024-02-17T12:05:00Z,London,74,Humidity,%
+2024-02-17T12:08:00Z,London,16,Temperature,°C
+2024-02-17T12:08:00Z,London,75,Humidity,%
+2024-02-17T12:05:15Z,London,15,Temperature,°C
+2024-02-17T12:05:15Z,London,73,Humidity,%
+2024-02-17T12:05:30Z,London,14,Temperature,°C
+2024-02-17T12:05:30Z,London,72,Humidity,%
