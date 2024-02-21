@@ -26,7 +26,11 @@ We need a Frontend + Backend application that allows you to post and visualize w
 
 1. Clone the repository
 2. Run `docker-compose up` in the root folder to start the application
-  This is will start the database, backend, and frontend. The first time it will take a while to download the images and install the dependencies.
+  This is will start:
+    - Database service (PostgreSQL)
+    - Backend application (Ruby on Rails)
+    - Frontend application (React)
+  The first time it will take a while to download the images and install the dependencies.
 3. The frontend will be available at `http://localhost:4000`
 4. The backend will be available at `http://localhost:3000`
 
@@ -38,13 +42,6 @@ We need a Frontend + Backend application that allows you to post and visualize w
 ```bash
 bundle exec rspec
 ```
-- **Frontend**:
-  - To run tests in the frontend, run the following command in the `frontend` folder:
-
-```bash
-WIP
-```
-
 
 ## Future Improvements
 
@@ -54,3 +51,4 @@ WIP
 - **Averages Cache**: Create a cache to store the averages and update them periodically.
 - **Charts**: Add charts to the frontend to visualize the metrics and averages.
 - **Error handling**: Implement error handling also in the frontend to make the application more reliable and user-friendly.
+- **Frontend Tests**: Add tests to the frontend to make the application more reliable and maintainable.

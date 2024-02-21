@@ -7,9 +7,9 @@
 
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins "http://localhost:4000" # For development. when going to production, change this to the frontend URL origin
-    resource "*",
-      headers: :any,
-      methods: [:get, :post, :put, :patch, :delete, :options, :head]
+    origins 'http://localhost:4000' # For development. when going to production, change this to the frontend URL origin
+    resource '*',
+             headers: :any,
+             methods: %i[get post put patch delete options head]
   end
 end

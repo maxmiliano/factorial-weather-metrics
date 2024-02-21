@@ -70,7 +70,10 @@ RSpec.describe 'Metrics' do
         perform_request
         expect(response).to have_http_status(:unprocessable_entity)
         expect(response.content_type).to include('application/json')
-        expect(response.body).to include("Unit can't be blank")
+        json_response = response.parsed_body
+        expect(json_response['errors']).to include(
+          { 'unit' => ["can't be blank"] }
+        )
       end
     end
   end
@@ -134,7 +137,6 @@ RSpec.describe 'Metrics' do
   end
 
   describe 'PUT /update' do
-
     let(:perform_request) { put "/metrics/#{metric_id}", params: { metric: update_attributes } }
 
     context 'when the Metric exists' do
@@ -142,9 +144,10 @@ RSpec.describe 'Metrics' do
 
       context 'with valid parameters' do
         let(:metric_id) { metric.id }
-        let(:update_attributes) {
+        let(:update_attributes) do
           { name: 'Temperature', value: 26.2, metric_type: 'Temperature', unit: '°C' }
-        }
+        end
+
         it 'updates the Metric' do
           perform_request
           metric.reload
@@ -179,6 +182,7 @@ RSpec.describe 'Metrics' do
 
         context 'with nil parameters' do
           let(:update_attributes) { { name: nil, value: nil, metric_type: nil, unit: nil } }
+
           it 'returns a 422 status code' do
             perform_request
             expect(response).to have_http_status(:unprocessable_entity)
@@ -187,14 +191,18 @@ RSpec.describe 'Metrics' do
 
           it 'returns the error message' do
             perform_request
-            ['Name', 'Value', 'Metric type', 'Unit'].each do |attribute|
-              expect(response.body).to include("#{attribute} can't be blank")
+            %w[name value metric_type unit].each do |attribute|
+              json_response = response.parsed_body
+              expect(json_response['errors']).to include(
+                { attribute => ["can't be blank"] }
+              )
             end
           end
         end
 
         context 'with empty parameters' do
           let(:update_attributes) { { name: '', value: '', metric_type: '', unit: '' } }
+
           it 'returns a 422 status code' do
             perform_request
             expect(response).to have_http_status(:unprocessable_entity)
@@ -203,8 +211,11 @@ RSpec.describe 'Metrics' do
 
           it 'returns the error message' do
             perform_request
-            ['Name', 'Value', 'Metric type', 'Unit'].each do |attribute|
-              expect(response.body).to include("#{attribute} can't be blank")
+            %w[name value metric_type unit].each do |attribute|
+              json_response = response.parsed_body
+              expect(json_response['errors']).to include(
+                { attribute => ["can't be blank"] }
+              )
             end
           end
         end

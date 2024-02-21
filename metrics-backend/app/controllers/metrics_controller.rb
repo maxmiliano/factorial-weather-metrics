@@ -2,7 +2,9 @@
 
 # Controller for the Metric
 class MetricsController < ApplicationController
-  before_action :set_metric, only: %i[destroy show update]
+  before_action :set_metric, only: %i[show update destroy]
+
+  rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
   # GET /metrics
   def index
@@ -12,8 +14,6 @@ class MetricsController < ApplicationController
   # GET /metrics/:id
   def show
     render json: @metric, status: :ok
-  rescue ActiveRecord::RecordNotFound => e
-    render json: { error: e.message }, status: :not_found
   end
 
   # POST /metrics
@@ -55,12 +55,14 @@ class MetricsController < ApplicationController
   private
 
   def set_metric
-    @metric = Metric.find_by!(id: params[:id])
-  rescue ActiveRecord::RecordNotFound
-    render json: { error: 'Metric not found' }, status: :not_found
+    @metric = Metric.find(params[:id])
   end
 
   def metric_params
     params.require(:metric).permit(:timestamp, :name, :value, :metric_type, :unit)
+  end
+
+  def record_not_found
+    render json: { error: 'Record not found' }, status: :not_found
   end
 end

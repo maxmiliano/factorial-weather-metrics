@@ -16,8 +16,9 @@ RSpec.describe Metric do
   end
 
   describe '.average_by_interval' do
-
-    let(:time) { Time.new(2024, 1, 1, 12, 0, 0) } # 2024-01-01 12:00:00
+    let(:time) { Time.zone.local(2024, 1, 1, 12, 0, 0) } # 2024-01-01 12:00:00
+    let(:time_format) { '%Y-%m-%d %H:%M:00' }
+    let(:average) { described_class.average_by_interval(interval) }
 
     before do
       create(:metric, name: 'Paris', value: 26.2, metric_type: 'Temperature', unit: '°C', timestamp: time)
@@ -30,11 +31,10 @@ RSpec.describe Metric do
     context 'with minute interval' do
       let(:interval) { 'minute' }
       let(:expected_result) { 26.7 } # average of 26.2 and 27.2
-      it 'returns the average value by minute' do
-        average = Metric.average_by_interval('minute')
-        result = average.find { |a| a.interval_group == time.strftime('%Y-%m-%d %H:%M:00') }
+      let(:result) { average.find { |a| a.interval_group == time.strftime(time_format) } }
 
-        expect(result.interval_group).to eq(time.strftime('%Y-%m-%d %H:%M:00'))
+      it 'returns the average value by minute' do
+        expect(result.interval_group).to eq(time.strftime(time_format))
         expect(result.average_value.to_f).to eq(expected_result)
         expect(result.count).to eq(2)
       end
@@ -43,11 +43,11 @@ RSpec.describe Metric do
     context 'with hour interval' do
       let(:interval) { 'hour' }
       let(:expected_result) { 27.3 } # average of 26.2, 27.2, 28.5
-      it 'returns the average value by hour' do
-        average = Metric.average_by_interval('hour')
-        result = average.find { |a| a.interval_group == time.strftime('%Y-%m-%d %H:00:00') }
+      let(:time_format) { '%Y-%m-%d %H:00:00' }
+      let(:result) { average.find { |a| a.interval_group == time.strftime(time_format) } }
 
-        expect(result.interval_group).to eq(time.strftime('%Y-%m-%d %H:00:00'))
+      it 'returns the average value by hour' do
+        expect(result.interval_group).to eq(time.strftime(time_format))
         expect(result.average_value.to_f).to eq(expected_result)
       end
     end
@@ -55,10 +55,11 @@ RSpec.describe Metric do
     context 'with day interval' do
       let(:interval) { 'day' }
       let(:expected_result) { 27.775 } # average of 26.2, 27.2, 28.5, 29.2
+      let(:time_format) { '%Y-%m-%d 00:00:00' }
+      let(:result) { average.find { |a| a.interval_group == time.strftime(time_format) } }
+
       it 'returns the average value by day' do
-        average = Metric.average_by_interval('day')
-        result = average.find { |a| a.interval_group == time.strftime('%Y-%m-%d 00:00:00') }
-        expect(result.interval_group).to eq(time.strftime('%Y-%m-%d 00:00:00'))
+        expect(result.interval_group).to eq(time.strftime(time_format))
         expect(result.average_value.to_f).to eq(expected_result)
       end
     end
